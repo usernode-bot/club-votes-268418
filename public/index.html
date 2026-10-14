@@ -389,15 +389,16 @@
 
     function showNew() {
       newOpts = ['', ''];
-      app.innerHTML = '<div class="bk"><button class="icon" data-act="cancel-new">Cancel</button>'
-        + '<strong style="font-size:16px">Post a decision</strong>'
-        + '<button class="btn-primary" data-act="submit-new" style="min-height:44px">Post</button></div>'
-        + '<div class="lbl">Question</div>'
+      app.innerHTML = '<div class="bk"><button class="icon" data-act="cancel-new" aria-label="Back to all decisions">' + ICONS.back + '</button></div>'
+        + '<h1 style="margin:0 0 16px">Post a decision</h1>'
+        + '<div class="lbl" style="margin-top:0">Question</div>'
         + '<input class="field" id="new-question" placeholder="e.g. Where should we meet this month?" style="margin:8px 0 16px">'
         + '<div class="lbl">Options</div>'
         + '<div id="new-opts">' + newOpts.map(function (v, i) { return optRowHtml(v, i); }).join('') + '</div>'
         + '<button class="btn-secondary" data-act="add-opt" style="margin:8px 0">Add option</button>'
+        + '<button class="btn-primary" data-act="submit-new" style="width:100%;margin-top:16px">Post</button>'
         + '<p id="new-error" class="meta" style="display:none;color:rgb(var(--accent))"></p>';
+      window.scrollTo(0, 0);
     }
 
     // ── Actions ──────────────────────────────────────────────────────────
@@ -408,8 +409,10 @@
       if (a === 'tab') {
         homeTab = el.getAttribute('data-tab');
         renderHome();
-      } else if (a === 'new' || a === 'cancel-new') {
+      } else if (a === 'new') {
         location.hash = '#/new';
+      } else if (a === 'cancel-new') {
+        location.hash = '#/';
       } else if (a === 'retry') {
         showHome();
       } else if (a === 'retry-detail') {

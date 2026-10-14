@@ -80,12 +80,18 @@
 
 svg {width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* The floating plus button lives at the column's bottom-right corner, in the
-   room the list keeps under it (.app's padding-bottom: the button is 56 px
-   tall and sits 16 px from the column's right and bottom edges), so it never
-   covers a card's buttons — on a phone or, anchored to the column, on a
-   wide window either. */
-.fab {position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25)}
+/* The floating plus button stays fixed at the viewport's bottom-right corner
+   on a phone (16 px off each edge); the list keeps 96 px of room under it
+   (.app's padding-bottom), so the last card scrolls clear of it. */
+.fab {position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25)}
+
+/* On a wide window the .app column stays 390 px wide and centred, so the
+   button anchors to the column's bottom-right corner instead: its right edge
+   16 px inside the column edge, its bottom 16 px off the viewport bottom.
+   (Half the column, 195 px, minus the 16 px inset and the 56 px width.) */
+@media (min-width: 673px) {
+  .fab {right:auto;left:50%;margin-left:calc(195px - 72px)}
+}
 
 .fab svg {width:26px;height:26px}
 
