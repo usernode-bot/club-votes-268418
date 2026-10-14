@@ -1,0 +1,11 @@
+{
+  "description": "Your club's shared space for deciding things together",
+  "icon": {
+    "emoji": "🗳️"
+  },
+  "secrets": [],
+  "governance": {
+    "preset": "you_or_the_group"
+  },
+  "tests": []
+}

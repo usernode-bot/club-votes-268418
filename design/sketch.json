@@ -1,0 +1,14 @@
+{
+  "note": "The featured card this app's creator was shown while it was being made: its emoji (also the app's icon, set in dapp.json), a tagline and a few points that sum up the description in a few words. It is a picture of the idea, not a design: it shows no screen and sets no layout, words or colours. Build from the description in the first version's request; where the two differ, the description wins.",
+  "kind": "featured-card",
+  "emoji": "🗳️",
+  "tagline": "Your club's shared space for deciding things together",
+  "points": [
+    "Post decisions the club needs to make",
+    "Everyone votes on each one",
+    "Discuss in comments under each vote"
+  ],
+  "source": "model",
+  "model": "z-ai/glm-5.3-flash",
+  "createdAt": "2026-10-14T20:35:08.451Z"
+}

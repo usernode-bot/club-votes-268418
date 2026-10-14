@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script>
+  // usernode-dev-console@1
+  (function () {
+    if (window.__usernodeDevConsole) return;
+    window.__usernodeDevConsole = true;
+    var S = '__usernodeDevConsole';
+    function serialize(v, depth) {
+      depth = depth || 0;
+      try {
+        if (v === undefined) return 'undefined';
+        if (v === null) return 'null';
+        if (typeof v === 'string') return v;
+        if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+        if (typeof v === 'function') return '[Function ' + (v.name || 'anonymous') + ']';
+        if (v instanceof Error) return (v.stack || (v.name + ': ' + v.message));
+        if (depth > 3) return '[…]';
+        var seen = new WeakSet();
+        return JSON.stringify(v, function (k, val) {
+          if (typeof val === 'object' && val !== null) {
+            if (seen.has(val)) return '[Circular]';
+            seen.add(val);
+          }
+          if (typeof val === 'function') return '[Function ' + (val.name || 'anonymous') + ']';
+          if (val instanceof Error) return val.stack || (val.name + ': ' + val.message);
+          return val;
+        });
+      } catch (e) { try { return String(v); } catch (_) { return '[unserializable]'; } }
+    }
+    function post(level, args, meta) {
+      try {
+        var payload = {
+          sentinel: S,
+          level: level,
+          args: Array.prototype.slice.call(args).map(function (a) { return serialize(a); }),
+          ts: Date.now(),
+          url: location.href,
+        };
+        if (meta) for (var k in meta) payload[k] = meta[k];
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(payload, '*');
+        }
+      } catch (_) {}
+    }
+    ['log','info','warn','error','debug'].forEach(function (level) {
+      var orig = console[level] ? console[level].bind(console) : function () {};
+      console[level] = function () { post(level, arguments); orig.apply(null, arguments); };
+    });
+    window.addEventListener('error', function (e) {
+      var msg = (e.error && (e.error.stack || e.error.message)) || e.message || 'Error';
+      post('error', [msg], { source: e.filename || '', line: e.lineno || 0, col: e.colno || 0, kind: 'error' });
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var r = e.reason;
+      var msg = (r && (r.stack || r.message)) || String(r);
+      post('error', [msg], { kind: 'unhandledrejection' });
+    });
+    try { post('info', ['[dev-console ready]'], { kind: 'ready' }); } catch (_) {}
+  })();
+  </script>
+  <title>Club Votes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%237c3aed'/><circle cx='50' cy='50' r='18' fill='white'/></svg>">
+  <!-- Tailwind, PRECOMPILED for this app (was cdn.tailwindcss.com's
+       in-browser engine plus an inline tailwind.config here). The config
+       moved to tailwind.config.js in the repo root; npm run build compiles
+       it to public/tailwind.css with Docker or Paketo on every image build, so the
+       stylesheet is regenerated from THIS commit's markup every deploy and
+       can never drift behind the code. ~7 KB of CSS instead of a ~400 KB
+       engine, and no flash of unstyled content.
+       Writing class names as whole literals is what keeps this working — a
+       class assembled from fragments at runtime (e.g. "bg-" + tone + "-500")
+       is invisible to the compiler. If you genuinely need runtime-generated
+       classes, swap this link for the platform-hosted engine instead:
+       <script src="/usernode-tailwind/v1/tailwind.js"></script> -->
+  <link rel="stylesheet" href="/tailwind.css">
+  <!-- The platform bridge, centrally hosted and loaded by RELATIVE path (the
+       handler in server.js serves it under a plain "node server.js"; the
+       platform's edge answers it everywhere else). Never vendor it and never
+       write a hostname in front of it.
+       It is NOT conditional on this app calling a bridge API: it is also how
+       the app ANSWERS the shell, so a scaffold without it is invisible to
+       anything that asks the frame a question. Offline launch is one of those.
+       Another is the page's colour: the bridge reports this document's opaque
+       ground to the shell (#1581), which is what makes the platform bar above
+       the app take the app's tone instead of the viewer's theme (#1945).
+       The bridge is also where the app learns the viewer's light/dark theme:
+       the script below reads it. -->
+  <script src="/usernode-bridge/v1/bridge.js"></script>
+  <!-- Follow the viewer's Homeroom theme (the bridge reports it), with the
+       OS preference as the fallback outside Homeroom. -->
+  <script>
+    (function () {
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function applyTheme() {
+        var theme = (window.usernode && window.usernode.theme) || (media.matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+      }
+      applyTheme();
+      window.addEventListener('usernode:theme-changed', applyTheme);
+      media.addEventListener('change', applyTheme);
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-ground text-fg">
+  <!-- Built from the design kit in styles/tailwind-input.css: colour tokens
+       that are right in both looks, and components for buttons, fields,
+       lists, cards and data states. The real app keeps the kit; CLAUDE.md's
+       "## Design" says how. -->
+  <!-- (Named in prose on purpose: Tailwind compiles any class-name word in
+       these files, comments included, and the starter should ship only the
+       components its screen uses.) -->
+  <main class="mx-auto flex max-w-md flex-col gap-8 px-4 py-10">
+
+    <!-- usernode-starter-notice@1 — starter-template messaging. When building
+         the user's real app, replace this whole screen and delete this block,
+         both sentinel comments included. -->
+    <section class="card flex flex-col items-start gap-3">
+      <div class="flex h-20 w-20 items-center justify-center rounded-2xl border border-line bg-ground text-title">🗳️</div>
+      <span class="rounded-full bg-raised px-3 py-1 text-small font-medium text-muted">Starter template</span>
+      <h1 class="text-title">Club Votes</h1>
+      <p class="text-body text-muted">Welcome to your new app! Everything on this screen is placeholder content that came with it.</p>
+      <p class="text-body text-muted">To change this app, ask Homeroom bot: tap the <strong class="font-semibold text-fg">Homeroom icon</strong>, then <strong class="font-semibold text-fg">Suggest an improvement</strong>. Describe what you'd like in plain English, and it will be turned into your real app.</p>
+    </section>
+    <!-- /usernode-starter-notice@1 -->
+
+    <p class="text-center text-small text-muted">Built on Homeroom. This template screen disappears once you build your real app.</p>
+  </main>
+</body>
+</html>

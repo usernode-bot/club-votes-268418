@@ -1,0 +1,138 @@
+/* Input stylesheet for this app's Tailwind build.
+ *
+ * Deliberately OUTSIDE public/ so it is never served — the @tailwind lines
+ * are build-time directives and mean nothing to a browser. npm run build
+ * compiles this to public/tailwind.css with Docker or Paketo.
+ *
+ * "base" is the preflight layer (the cross-browser reset). Keep all three
+ * layers, in this order; dropping base changes every heading, list and form
+ * control.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Colour tokens ────────────────────────────────────────────────────────
+ * This app's palette, defined once. Each value is "R G B"; tailwind.config.js
+ * names them (bg-ground, bg-surface, text-fg, text-muted, border-line,
+ * bg-accent with text-on-accent, ...). :root is the light look, and .dark,
+ * which the theme script in public/index.html sets on <html>, the dark one.
+ *
+ * Re-theme the app HERE: change the values, keep the names. The defaults
+ * (warm greys, one teal accent) are a quiet starting point, not a look.
+ * Keep every text pair at 4.5:1 or more in both looks: fg and muted on
+ * ground, surface and raised; accent and danger on ground and surface;
+ * on-accent on accent; on-danger on danger.
+ *
+ * Adopting the native UI kit later? Point its --un-accent and
+ * --un-accent-contrast at the accent and on-accent tokens.
+ */
+@layer base {
+  :root {
+    --ground: 250 250 249;    /* the page */
+    --surface: 255 255 255;   /* lists, cards, fields */
+    --raised: 245 245 244;    /* hovers, badges */
+    --fg: 28 25 23;           /* text */
+    --muted: 87 83 78;        /* secondary text */
+    --line: 231 229 228;      /* borders, dividers, skeletons */
+    --accent: 15 118 110;     /* the one accent */
+    --on-accent: 255 255 255; /* text on the accent */
+    --danger: 185 28 28;
+    --on-danger: 255 255 255;
+    --focus: 13 148 136;      /* the keyboard focus ring */
+  }
+  .dark {
+    --ground: 12 10 9;
+    --surface: 28 25 23;
+    --raised: 41 37 36;
+    --fg: 245 245 244;
+    --muted: 168 162 158;
+    --line: 68 64 60;
+    --accent: 45 212 191;
+    --on-accent: 4 47 46;
+    --danger: 248 113 113;
+    --on-danger: 69 10 10;
+    --focus: 94 234 212;
+  }
+  /* el.hidden = true hides an element even when a class gives it a display
+     (flex, the components below). */
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}
+
+/* ── Components ───────────────────────────────────────────────────────────
+ * A small starting kit on the tokens. Use these rather than restyling the
+ * same thing by hand, add to them sparingly, and change a component here
+ * rather than one copy of it. Type: text-title, text-heading, text-body and
+ * text-small (tailwind.config.js), nothing in between.
+ */
+@layer components {
+  /* Each screen's content in one centred column, <main
+     class="page-column">. A phone fills it; a wider window keeps it a
+     readable column instead of stretching rows and buttons across the
+     window. The screen's own padding goes inside it. */
+  .page-column {
+    @apply mx-auto w-full max-w-2xl;
+  }
+
+  /* Buttons: one primary per screen, the rest secondary. At least 44 px
+     each way, so they are easy to tap. */
+  .btn-primary,
+  .btn-secondary {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg px-4 text-body font-medium
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2
+      focus-visible:ring-offset-ground disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-accent text-on-accent hover:brightness-95;
+  }
+  .btn-secondary {
+    @apply border border-line bg-surface text-fg hover:bg-raised;
+  }
+
+  /* Text inputs, selects and textareas: <input class="field">, 44 px tall.
+     The placeholder is a faint hint (muted at 60%), so an example such as
+     "5.0" never reads as a value somebody already typed in. */
+  .field {
+    @apply block min-h-11 w-full rounded-lg border border-line bg-surface px-3 py-2 text-body text-fg
+      placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-focus;
+  }
+
+  /* A grouped list: <ul class="list"> of <li class="list-row">. The usual
+     way to show several things; prefer it to a stack of cards. */
+  .list {
+    @apply divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface;
+  }
+  .list-row {
+    @apply flex min-h-11 items-center gap-3 px-4 py-3;
+  }
+
+  /* A card: one self-contained thing, usually something you tap. Most
+     screens need none. Never put a card inside a card or a .list. */
+  .card {
+    @apply rounded-xl border border-line bg-surface p-4;
+  }
+
+  /* The label above a section: sentence case, never uppercase or tracked. */
+  .section-label {
+    @apply mb-2 px-1 text-small font-medium text-muted;
+  }
+
+  /* The states of anything that loads data. Show exactly one at a time:
+     - loading: the content's own shape, never a blank: the same list and
+       rows at their height, with .skeleton bars where their text goes, so
+       nothing moves when the data arrives;
+     - empty, only when the load WORKED and found nothing: a title, one
+       sentence and the action that fills it;
+     - error, only when the load FAILED: what failed, what still works,
+       and a Retry button.
+     Never show the empty state while loading or for a failure. */
+  .skeleton {
+    @apply rounded-md bg-line motion-safe:animate-pulse;
+  }
+  .state-empty,
+  .state-error {
+    @apply flex flex-col items-center gap-2 px-4 py-8 text-center;
+  }
+}
