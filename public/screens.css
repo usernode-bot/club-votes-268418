@@ -17,12 +17,15 @@
   background: rgb(var(--ground));
   color: rgb(var(--fg));
   min-height: 1040px;
-  width: 390px;
+  max-width: 390px;
+  width: 100%;
+  margin-inline: auto;
   box-sizing: border-box;
   font-family: ui-rounded,system-ui,sans-serif;
   font-size: 16px;
   line-height: 24px;
-  /* Room under the list so the floating plus button never covers a card. */
+  /* Room under the list so the floating plus button never covers a card:
+     the button is 56 px tall and sits 16 px off the bottom. */
   padding: 0 16px 96px;
   position: relative;
 }
@@ -65,6 +68,10 @@
 
 .foot {display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgb(var(--line));font-size:14px;line-height:20px;color:rgb(var(--muted))}
 
+/* Vote count and comment count read as one group on the left; the outlined
+   button stays on the right. */
+.foot-counts {display:inline-flex;align-items:center;gap:16px}
+
 .foot span {display:inline-flex;align-items:center;gap:6px}
 
 .btn-secondary {min-height:44px;padding:0 16px;border-radius:8px;border:1px solid rgb(var(--line));background:rgb(var(--surface));color:rgb(var(--fg));font-size:14px;font-weight:500;display:inline-flex;align-items:center}
@@ -73,7 +80,12 @@
 
 svg {width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.fab {position:fixed;bottom:24px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25);left:calc(50% + 123px)}
+/* The floating plus button lives at the column's bottom-right corner, in the
+   room the list keeps under it (.app's padding-bottom: the button is 56 px
+   tall and sits 16 px from the column's right and bottom edges), so it never
+   covers a card's buttons — on a phone or, anchored to the column, on a
+   wide window either. */
+.fab {position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25)}
 
 .fab svg {width:26px;height:26px}
 
@@ -146,6 +158,13 @@ button {cursor:pointer;font-family:inherit}
    placeholder as the faint hint it is. */
 input.field {color:rgb(var(--fg))}
 input.field::placeholder {color:rgb(var(--muted));opacity:.6}
+
+/* The post-a-decision form's option rows. The two required options have no
+   × (they cannot be removed), so their field runs the full width and its
+   edges line up with the question field above. */
+.new-opt {display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.new-opt .field {margin:0}
+.new-opt .rep {min-width:44px;justify-content:center}
 
 /* The one "Staging demo" line, under the heading on the main screen. */
 .demo-note {margin:4px 0 0;font-size:14px;line-height:20px;color:rgb(var(--accent));font-weight:600}

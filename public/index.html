@@ -219,8 +219,8 @@
             return '<div class="opt"><div class="ol' + (o.id === d.myOptionId ? ' mine' : '') + '"><span>' + esc(o.label) + '</span><b>' + o.count + '</b></div>'
               + '<div class="bar"><i class="' + (o.lead ? 'lead' : '') + '" style="width:' + (d.totalVotes ? Math.round(o.count / d.totalVotes * 100) : 0) + '%"></i></div></div>';
           }).join('')
-        + '<div class="foot"><span>' + d.totalVotes + ' votes</span>'
-        + '<span>' + ICONS.bubble + d.commentCount + '</span>' + btn + '</div>'
+        + '<div class="foot"><div class="foot-counts"><span>' + d.totalVotes + ' votes</span>'
+        + '<span>' + ICONS.bubble + d.commentCount + '</span></div>' + btn + '</div>'
         + '</div>';
     }
 
@@ -238,9 +238,9 @@
         + (d.demo ? '<p class="demo-note" data-usernode-demo-note>Staging demo</p>' : '')
         + '</div>';
       if (empty) {
-        html += '<div class="state-empty"><h2 style="font-size:20px;margin:0">Nothing to decide yet</h2>'
+        html += '<div class="state-empty"><h2 style="font-size:20px;font-weight:600;margin:0">Nothing to decide yet</h2>'
           + '<p style="color:rgb(var(--muted));margin:0">Post the first thing the club needs to decide.</p>'
-          + '<button class="btn-primary" data-act="new">Post a decision</button></div>';
+          + '<button class="btn-primary" data-act="new" style="margin-top:8px">Post a decision</button></div>';
       } else {
         html += '<div class="tabs">'
           + '<button class="tab' + (homeTab === 'open' ? ' on' : '') + '" data-tab="open">Open ' + d.openCount + '</button>'
@@ -269,9 +269,9 @@
         renderHome();
       }).catch(function () {
         app.innerHTML = '<div class="top"><h1>Club Votes</h1><p></p></div>'
-          + '<div class="state-error"><h2 style="font-size:20px;margin:0">The decisions could not be loaded</h2>'
+          + '<div class="state-error"><h2 style="font-size:20px;font-weight:600;margin:0">The decisions could not be loaded</h2>'
           + '<p style="color:rgb(var(--muted));margin:0">Nothing you posted is lost. Check your connection and try again.</p>'
-          + '<button class="btn-secondary" data-act="retry">Retry</button></div>';
+          + '<button class="btn-secondary" data-act="retry" style="margin-top:8px">Retry</button></div>';
       });
     }
 
@@ -356,27 +356,46 @@
         renderDetail();
       }).catch(function () {
         app.innerHTML = '<div class="bk"><a class="icon" href="#/">' + ICONS.back + 'All decisions</a></div>'
-          + '<div class="state-error"><h2 style="font-size:20px;margin:0">The decision could not be loaded</h2>'
+          + '<div class="state-error"><h2 style="font-size:20px;font-weight:600;margin:0">The decision could not be loaded</h2>'
           + '<p style="color:rgb(var(--muted));margin:0">Nothing you posted is lost. Check your connection and try again.</p>'
-          + '<button class="btn-secondary" data-act="retry-detail" data-id="' + esc(id) + '">Retry</button></div>';
+          + '<button class="btn-secondary" data-act="retry-detail" data-id="' + esc(id) + '" style="margin-top:8px">Retry</button></div>';
       });
     }
 
     // ── New decision form ────────────────────────────────────────────────
-    function optInputRow(value) {
-      return '<div class="new-opt" style="display:flex;gap:8px;align-items:flex-start">'
-        + '<input class="field new-opt-input" placeholder="e.g. Library back room" value="' + esc(value || '') + '" style="margin:0">'
-        + '<button class="rep" data-act="remove-opt" aria-label="Remove option" style="min-width:44px;justify-content:center">✕</button></div>';
+    var NEW_OPT_PLACEHOLDERS = ['e.g. Library back room', 'e.g. Corner cafe', "e.g. Dan's garage"];
+    var newOpts = ['', ''];
+
+    function optRowHtml(value, i) {
+      // The two required options cannot be removed: the × only shows once a
+      // third row exists, and without it the field runs the full width.
+      var removable = newOpts.length > 2;
+      return '<div class="new-opt">'
+        + '<input class="field new-opt-input" placeholder="' + NEW_OPT_PLACEHOLDERS[i % NEW_OPT_PLACEHOLDERS.length] + '" value="' + esc(value || '') + '">'
+        + (removable ? '<button class="rep" data-act="remove-opt" data-idx="' + i + '" aria-label="Remove option">✕</button>' : '')
+        + '</div>';
+    }
+
+    function renderNewOpts() {
+      document.getElementById('new-opts').innerHTML =
+        newOpts.map(function (v, i) { return optRowHtml(v, i); }).join('');
+    }
+
+    // Keep typed values across the re-render that adding or removing a row does.
+    function syncNewOpts() {
+      var inputs = document.querySelectorAll('.new-opt-input');
+      for (var i = 0; i < newOpts.length && i < inputs.length; i++) newOpts[i] = inputs[i].value;
     }
 
     function showNew() {
+      newOpts = ['', ''];
       app.innerHTML = '<div class="bk"><button class="icon" data-act="cancel-new">Cancel</button>'
         + '<strong style="font-size:16px">Post a decision</strong>'
         + '<button class="btn-primary" data-act="submit-new" style="min-height:44px">Post</button></div>'
         + '<div class="lbl">Question</div>'
         + '<input class="field" id="new-question" placeholder="e.g. Where should we meet this month?" style="margin:8px 0 16px">'
         + '<div class="lbl">Options</div>'
-        + '<div id="new-opts">' + optInputRow('') + optInputRow('') + '</div>'
+        + '<div id="new-opts">' + newOpts.map(function (v, i) { return optRowHtml(v, i); }).join('') + '</div>'
         + '<button class="btn-secondary" data-act="add-opt" style="margin:8px 0">Add option</button>'
         + '<p id="new-error" class="meta" style="display:none;color:rgb(var(--accent))"></p>';
     }
@@ -431,10 +450,12 @@
           .then(refreshDetail)
           .catch(function (e) { console.warn(e.message); });
       } else if (a === 'add-opt') {
-        var wrap = document.getElementById('new-opts');
-        if (wrap.children.length < 8) wrap.insertAdjacentHTML('beforeend', optInputRow(''));
+        syncNewOpts();
+        if (newOpts.length < 8) { newOpts.push(''); renderNewOpts(); }
       } else if (a === 'remove-opt') {
-        el.closest('.new-opt').remove();
+        syncNewOpts();
+        newOpts.splice(Number(el.getAttribute('data-idx')), 1);
+        renderNewOpts();
       } else if (a === 'submit-new') {
         var question = document.getElementById('new-question').value.trim();
         var opts = Array.prototype.map.call(document.querySelectorAll('.new-opt-input'), function (i) { return i.value.trim(); })
