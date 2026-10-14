@@ -57,6 +57,10 @@ module.exports = {
         focus: token('focus'), // the keyboard focus ring
       },
       // The type scale: four sizes, and nothing in between.
+      // The face is the rounded system stack (see CLAUDE.md "## Design").
+      fontFamily: {
+        sans: ['ui-rounded', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      },
       fontSize: {
         small: ['0.875rem', { lineHeight: '1.25rem' }],
         body: ['1rem', { lineHeight: '1.5rem' }],

@@ -1,0 +1,176 @@
+/* The screens the spec drew, carried over by the platform before the first
+   version was built (screen 1 is public/index.html's main screen; screen 2,
+   if any, its <template data-spec-screen="2">). Colours are the design kit's
+   tokens, rgb(var(--accent)), so they follow the light and the dark look. */
+
+/* Each screen is one centred column: the phone width it was drawn at grows
+   to a readable column on a wider window, never rows and buttons stretched
+   across the window. Remove this only for an app that fills the window by
+   design, such as a map. */
+[data-spec-screen] {
+  width: 100%;
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.app {
+  background: rgb(var(--ground));
+  color: rgb(var(--fg));
+  min-height: 1040px;
+  max-width: 390px;
+  width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+  font-family: ui-rounded,system-ui,sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  /* Room under the list so the floating plus button never covers a card:
+     the button is 56 px tall and sits 16 px off the bottom. */
+  padding: 0 16px 96px;
+  position: relative;
+}
+
+.app * {box-sizing:border-box}
+
+.top {
+  padding: 20px 4px 12px;
+}
+
+.top h1 {margin:0;font-size:28px;line-height:36px;font-weight:700}
+
+.top p {margin:2px 0 0;font-size:14px;line-height:20px;color:rgb(var(--muted))}
+
+.tabs {display:flex;gap:8px;margin:8px 0 16px}
+
+.tab {min-height:44px;padding:0 16px;border-radius:22px;display:inline-flex;align-items:center;font-size:14px;font-weight:500;border:1px solid rgb(var(--line));background:rgb(var(--surface));color:rgb(var(--fg))}
+
+.tab.on {background:rgb(var(--fg));color:rgb(var(--ground));border-color:rgb(var(--fg))}
+
+.card {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:12px;padding:16px;margin-bottom:12px}
+
+.meta {font-size:14px;line-height:20px;color:rgb(var(--muted));display:flex;justify-content:space-between}
+
+.q {font-size:20px;line-height:28px;font-weight:600;margin:6px 0 12px}
+
+.opt {margin-bottom:10px}
+
+.ol {display:flex;justify-content:space-between;font-size:14px;line-height:20px;margin-bottom:4px}
+
+.ol b {font-weight:600}
+
+.ol.mine span:first-child:after {content:" (your vote)";color:rgb(var(--accent));font-weight:600}
+
+.bar {height:8px;border-radius:4px;background:rgb(var(--raised));overflow:hidden}
+
+.bar i {display:block;height:100%;background:rgb(var(--muted));opacity:.55;border-radius:4px}
+
+.bar i.lead {background:rgb(var(--accent));opacity:1}
+
+.foot {display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgb(var(--line));font-size:14px;line-height:20px;color:rgb(var(--muted))}
+
+/* Vote count and comment count read as one group on the left; the outlined
+   button stays on the right. */
+.foot-counts {display:inline-flex;align-items:center;gap:16px}
+
+.foot span {display:inline-flex;align-items:center;gap:6px}
+
+.btn-secondary {min-height:44px;padding:0 16px;border-radius:8px;border:1px solid rgb(var(--line));background:rgb(var(--surface));color:rgb(var(--fg));font-size:14px;font-weight:500;display:inline-flex;align-items:center}
+
+.done {color:rgb(var(--ok));font-weight:600}
+
+svg {width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* The floating plus button stays fixed at the viewport's bottom-right corner
+   on a phone (16 px off each edge); the list keeps 96 px of room under it
+   (.app's padding-bottom), so the last card scrolls clear of it. */
+.fab {position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25)}
+
+/* On a wide window the .app column stays 390 px wide and centred, so the
+   button anchors to the column's bottom-right corner instead: its right edge
+   16 px inside the column edge, its bottom 16 px off the viewport bottom.
+   (Half the column, 195 px, minus the 16 px inset and the 56 px width.) */
+@media (min-width: 673px) {
+  .fab {right:auto;left:50%;margin-left:calc(195px - 72px)}
+}
+
+.fab svg {width:26px;height:26px}
+
+.section-label {font-size:14px;font-weight:500;color:rgb(var(--muted));margin:8px 4px}
+
+/* Screen 2: its rules the first screen has not got. */
+
+svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.bk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.icon {min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:rgb(var(--fg));font-size:14px;text-decoration:none;background:none;border:0;cursor:pointer;padding:0;font-family:inherit}
+
+.meta {font-size:14px;line-height:20px;color:rgb(var(--muted))}
+
+h1 {font-size:28px;line-height:36px;font-weight:700;margin:4px 0 16px}
+
+.list {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:12px;overflow:hidden}
+
+.list-row {display:flex;gap:12px;align-items:center;padding:12px 16px;min-height:64px;border-top:1px solid rgb(var(--line))}
+
+.list-row:first-child {border-top:0}
+
+.dot {width:22px;height:22px;border-radius:11px;border:2px solid rgb(var(--line));flex:none}
+
+.sel .dot {border:7px solid rgb(var(--accent))}
+
+.grow {flex:1}
+
+.ol {display:flex;justify-content:space-between;font-size:16px;margin-bottom:6px}
+
+.sel .ol span {font-weight:600}
+
+.row {display:flex;justify-content:space-between;align-items:center;margin:12px 0 24px}
+
+.btn-primary {min-height:44px;padding:0 16px;border-radius:8px;background:rgb(var(--accent));color:rgb(var(--on-accent));font-size:16px;font-weight:500;display:inline-flex;align-items:center}
+
+.section-label {font-size:14px;font-weight:500;color:rgb(var(--muted));margin:0 4px 8px}
+
+.c {padding:12px 16px;border-top:1px solid rgb(var(--line))}
+
+.c:first-child {border-top:0}
+
+.ch {display:flex;justify-content:space-between;align-items:center;font-size:14px;line-height:20px}
+
+.ch b {font-weight:600}
+
+.c p {margin:2px 0 0}
+
+.rep {min-height:44px;display:inline-flex;align-items:center;font-size:14px;color:rgb(var(--muted))}
+
+.field {display:block;width:100%;min-height:44px;border:1px solid rgb(var(--line));border-radius:8px;background:rgb(var(--surface));padding:10px 12px;color:rgb(var(--muted));margin:16px 0 8px}
+
+.lbl {font-size:14px;font-weight:500;margin-top:16px}
+
+/* Behaviour the drawn screens need now that they render live data. */
+
+/* The floating plus button: bottom right of the column, always on top,
+   never over a card (the list keeps 96px of room under it). */
+.fab { border: 0; cursor: pointer; }
+
+button {cursor:pointer;font-family:inherit}
+
+/* Real inputs in the drawn .field shape: typed text reads as text, the
+   placeholder as the faint hint it is. */
+input.field {color:rgb(var(--fg))}
+input.field::placeholder {color:rgb(var(--muted));opacity:.6}
+
+/* The post-a-decision form's option rows. The two required options have no
+   × (they cannot be removed), so their field runs the full width and its
+   edges line up with the question field above. */
+.new-opt {display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.new-opt .field {margin:0}
+.new-opt .rep {min-width:44px;justify-content:center}
+
+/* The one "Staging demo" line, under the heading on the main screen. */
+.demo-note {margin:4px 0 0;font-size:14px;line-height:20px;color:rgb(var(--accent));font-weight:600}

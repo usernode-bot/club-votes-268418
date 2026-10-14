@@ -7,5 +7,24 @@
   "governance": {
     "preset": "you_or_the_group"
   },
-  "tests": []
+  "tests": [
+    {
+      "id": "main.list",
+      "name": "Populated decisions",
+      "path": "/?demo=1",
+      "expectText": "Where should we meet on Thursdays?",
+      "visual": true,
+      "impact": ["public/**", "styles/**"]
+    },
+    {
+      "name": "Empty club",
+      "path": "/",
+      "expectText": "Nothing to decide yet"
+    },
+    {
+      "name": "New decision form",
+      "path": "/#/new",
+      "expectSelector": "#new-question"
+    }
+  ]
 }

@@ -95,24 +95,26 @@ tables you've marked private), etc.
 
 ## About Club Votes
 
-Your club's shared space for deciding things together
-
-_(add a sentence or two more of product context here so Claude Code has a
-shared understanding of what this app is for)_
+Your club's shared space for deciding things together. Anyone in the club
+posts a question with its options, everyone picks one, people talk it
+through in comments under each one, and the poster closes the vote when
+they are ready. Decisions live in the `decisions` table with their
+`options`, one `vote` per person per decision (changeable until close),
+and a `comments` thread each. The winner is computed from votes at read
+time, never stored.
 
 ## Design
 
-This app's look. The first real version fills in the blanks; every later
-change follows it, and updates it when a request changes the look on purpose.
-
-- **Palette:** _(name the accent, any second colour and the neutrals, e.g.
-  "accent: tomato red; second: basil green; neutrals: warm greys")_
-- **Signature element:** _(the one thing on screen drawn from this app's
-  subject, which no other app would have)_
+- **Palette:** warm neutrals (cream ground, white surfaces, warm grey
+  text and lines) with one action colour, brick red, for the primary
+  action, the leading tally bar and focus; an "ok" green for Decided.
+  Token values live in `styles/tailwind-input.css`, light and dark, and
+  follow the viewer's Homeroom theme.
+- **Signature element:** each option's tally bar, like a ballot box
+  filling up. The leading option's bar is brick red; the others are
+  muted grey. It shows on the cards and on the opened decision.
 - **Type scale:** `text-title`, `text-heading`, `text-body`, `text-small`
-  _(change their sizes in `tailwind.config.js` if you must, not their number)_
-- **One fixed look:** _(only for an app drawn as its own scene, such as a
-  game: which look, and why. Otherwise delete this line.)_
+  on the rounded system face (`ui-rounded`, fallback `system-ui`).
 
 The kit is in `styles/tailwind-input.css`: colour tokens with a light and
 a dark value (named in `tailwind.config.js`), and a few components

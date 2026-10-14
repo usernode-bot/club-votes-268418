@@ -1,27 +1,40 @@
 # Club Votes
 
-> **Starter template** — this repo was scaffolded by Homeroom Social
-> Vibecoding. Everything in it is placeholder example code until the
-> app's first real feature is built.
+Your club's shared space for deciding things together. Anyone in the club
+posts a question with its options, everyone picks one, people talk it
+through in comments, and the person who posted closes the vote when they
+are ready.
 
-The scaffold is a small working demo that proves the plumbing works:
+- **Post a decision** — the round plus button opens a short form: the
+  question, then two or more options.
+- **Vote** — one choice per decision, shown as live counts with a tally
+  bar per option. You can change your vote while it is open.
+- **Discuss** — a comment thread under each decision, oldest first.
+- **Close a vote** — the poster closes it when ready; the option with the
+  most votes becomes the winner, a tie is shown as a tie. Closed decisions
+  move to the Decided tab.
 
-- **Sign-in** — the server verifies the platform-issued user token
-  (an RS256 JWT) on every request, so the app already knows who is
-  using it. No accounts to build.
-- **Database** — the app has its own private Postgres database, ready
-  to store things.
-- **Styling** — Tailwind CSS, precompiled by `npm run build` during
-  image creation with either Kubernetes/Paketo or standalone Docker, in a
-  light and a dark look that follow the viewer's Homeroom theme.
+Voting, posting and commenting need a Homeroom account; visitors without
+one can read everything. Who voted for what is never shown, only counts.
 
-## Replacing the template
+## Design
 
-To change this app, ask Homeroom bot: open the app on Homeroom, tap the
-Homeroom icon in the header, then **Suggest an improvement**, and describe
-the app you want in plain English. The template will be replaced with your
-real app. You can also run
-Claude Code against this repo directly; start with `CLAUDE.md`, which
-carries the app-specific notes and points at the platform rules.
+- **Palette:** warm neutrals (cream ground, white surfaces, warm grey
+  text and lines) with one action colour, brick red, used for the primary
+  action, the leading tally bar and focus. An "ok" green marks Decided.
+  Tokens live in `styles/tailwind-input.css`, a light and a dark value
+  each, both looks following the viewer's Homeroom theme.
+- **Signature element:** each option's tally bar, like a ballot box
+  filling up. The leading option's bar is brick red; the others are
+  muted grey. It appears on the cards and on the opened decision.
+- **Type:** the rounded system face (`ui-rounded` fallback `system-ui`)
+  throughout, on the kit's four sizes (`text-title`, `text-heading`,
+  `text-body`, `text-small`).
+- Icons are thin line drawings: a speech bubble for comments, a plus to
+  post, a back arrow.
 
-Once the real app exists, rewrite this README to describe it.
+## Running locally
+
+`node server.js` against a Postgres `DATABASE_URL`. `npm run build`
+compiles the Tailwind stylesheet. On staging, open `?demo=1` for the
+populated demo.
