@@ -16,12 +16,13 @@
 .app {
   background: rgb(var(--ground));
   color: rgb(var(--fg));
-  min-height: 1100px;
+  min-height: 1040px;
   width: 390px;
   box-sizing: border-box;
   font-family: ui-rounded,system-ui,sans-serif;
   font-size: 16px;
   line-height: 24px;
+  /* Room under the list so the floating plus button never covers a card. */
   padding: 0 16px 96px;
   position: relative;
 }
@@ -72,25 +73,13 @@
 
 svg {width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.fab {position:absolute;right:16px;top:764px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25)}
+.fab {position:fixed;bottom:24px;width:56px;height:56px;border-radius:28px;background:rgb(var(--accent));color:rgb(var(--on-accent));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,28,22,.25);left:calc(50% + 123px)}
 
 .fab svg {width:26px;height:26px}
 
 .section-label {font-size:14px;font-weight:500;color:rgb(var(--muted));margin:8px 4px}
 
 /* Screen 2: its rules the first screen has not got. */
-
-.app {
-  background: rgb(var(--ground));
-  color: rgb(var(--fg));
-  min-height: 1040px;
-  width: 390px;
-  box-sizing: border-box;
-  font-family: ui-rounded,system-ui,sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  padding: 0 16px 32px;
-}
 
 svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
@@ -101,7 +90,7 @@ svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-
   padding: 8px 0;
 }
 
-.icon {min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:rgb(var(--fg));font-size:14px}
+.icon {min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:rgb(var(--fg));font-size:14px;text-decoration:none;background:none;border:0;cursor:pointer;padding:0;font-family:inherit}
 
 .meta {font-size:14px;line-height:20px;color:rgb(var(--muted))}
 
@@ -144,3 +133,19 @@ h1 {font-size:28px;line-height:36px;font-weight:700;margin:4px 0 16px}
 .field {display:block;width:100%;min-height:44px;border:1px solid rgb(var(--line));border-radius:8px;background:rgb(var(--surface));padding:10px 12px;color:rgb(var(--muted));margin:16px 0 8px}
 
 .lbl {font-size:14px;font-weight:500;margin-top:16px}
+
+/* Behaviour the drawn screens need now that they render live data. */
+
+/* The floating plus button: bottom right of the column, always on top,
+   never over a card (the list keeps 96px of room under it). */
+.fab { border: 0; cursor: pointer; }
+
+button {cursor:pointer;font-family:inherit}
+
+/* Real inputs in the drawn .field shape: typed text reads as text, the
+   placeholder as the faint hint it is. */
+input.field {color:rgb(var(--fg))}
+input.field::placeholder {color:rgb(var(--muted));opacity:.6}
+
+/* The one "Staging demo" line, under the heading on the main screen. */
+.demo-note {margin:4px 0 0;font-size:14px;line-height:20px;color:rgb(var(--accent));font-weight:600}

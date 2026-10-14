@@ -43,17 +43,18 @@
     --ok: 46 110 78; /* from the spec's screens */
   }
   .dark {
-    --ground: 12 10 9;
-    --surface: 28 25 23;
-    --raised: 41 37 36;
-    --fg: 245 245 244;
-    --muted: 168 162 158;
-    --line: 68 64 60;
-    --accent: 45 212 191;
-    --on-accent: 4 47 46;
-    --danger: 248 113 113;
-    --on-danger: 69 10 10;
-    --focus: 94 234 212;
+    --ground: 24 20 17;
+    --surface: 34 29 25;
+    --raised: 46 40 35;
+    --fg: 245 240 232;
+    --muted: 176 166 154;
+    --line: 64 57 50;
+    --accent: 232 120 92;
+    --on-accent: 38 14 6;
+    --danger: 231 106 84;
+    --on-danger: 38 14 6;
+    --focus: 232 120 92;
+    --ok: 120 196 154;
   }
   /* el.hidden = true hides an element even when a class gives it a display
      (flex, the components below). */
@@ -135,5 +136,18 @@
   .state-empty,
   .state-error {
     @apply flex flex-col items-center gap-2 px-4 py-8 text-center;
+  }
+
+  /* The signature element: an option's tally bar, like a ballot box filling
+     up. The leading option's bar is the action colour; the others are muted
+     grey. (The drawn screens use the same shape via public/screens.css.) */
+  .tally-bar {
+    @apply block h-2 overflow-hidden rounded bg-raised;
+  }
+  .tally-bar > i {
+    @apply block h-full rounded bg-muted/55;
+  }
+  .tally-bar > i.lead {
+    @apply bg-accent opacity-100;
   }
 }
