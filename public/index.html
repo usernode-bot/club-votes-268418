@@ -78,6 +78,7 @@
        classes, swap this link for the platform-hosted engine instead:
        <script src="/usernode-tailwind/v1/tailwind.js"></script> -->
   <link rel="stylesheet" href="/tailwind.css">
+  <link rel="stylesheet" href="/screens.css">
   <!-- The platform bridge, centrally hosted and loaded by RELATIVE path (the
        handler in server.js serves it under a plain "node server.js"; the
        platform's edge answers it everywhere else). Never vendor it and never
@@ -115,21 +116,76 @@
   <!-- (Named in prose on purpose: Tailwind compiles any class-name word in
        these files, comments included, and the starter should ship only the
        components its screen uses.) -->
-  <main class="mx-auto flex max-w-md flex-col gap-8 px-4 py-10">
+  <!-- usernode-spec-screens@1: the screens the spec drew, carried over by the platform as this
+       first version's starting point. Their styles are in public/screens.css.
+       Change them where behaviour needs it; do not redraw them. -->
+  <div data-spec-screen="1">
+    <div class="app">
+    <div class="top"><h1>Club Votes</h1><p>3 open decisions, 1 needs your vote</p></div>
+    <div class="tabs"><span class="tab on">Open 3</span><span class="tab">Decided 7</span></div>
 
-    <!-- usernode-starter-notice@1 — starter-template messaging. When building
-         the user's real app, replace this whole screen and delete this block,
-         both sentinel comments included. -->
-    <section class="card flex flex-col items-start gap-3">
-      <div class="flex h-20 w-20 items-center justify-center rounded-2xl border border-line bg-ground text-title">🗳️</div>
-      <span class="rounded-full bg-raised px-3 py-1 text-small font-medium text-muted">Starter template</span>
-      <h1 class="text-title">Club Votes</h1>
-      <p class="text-body text-muted">Welcome to your new app! Everything on this screen is placeholder content that came with it.</p>
-      <p class="text-body text-muted">To change this app, ask Homeroom bot: tap the <strong class="font-semibold text-fg">Homeroom icon</strong>, then <strong class="font-semibold text-fg">Suggest an improvement</strong>. Describe what you'd like in plain English, and it will be turned into your real app.</p>
-    </section>
-    <!-- /usernode-starter-notice@1 -->
+    <div class="card">
+    <div class="meta"><span>Posted by Maya</span><span>Closes when Maya ends it</span></div>
+    <div class="q">Where should we meet on Thursdays?</div>
+    <div class="opt"><div class="ol"><span>Library back room</span><b>6</b></div><div class="bar"><i class="lead" style="width:60%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Corner Cafe</span><b>3</b></div><div class="bar"><i style="width:30%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Dan's garage</span><b>1</b></div><div class="bar"><i style="width:10%"></i></div></div>
+    <div class="foot"><span>10 votes</span><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>14</span><span class="btn-secondary">Vote</span></div>
+    </div>
 
-    <p class="text-center text-small text-muted">Built on Homeroom. This template screen disappears once you build your real app.</p>
-  </main>
+    <div class="card">
+    <div class="meta"><span>Posted by You</span><span>2 days ago</span></div>
+    <div class="q">What should we do for the spring project?</div>
+    <div class="opt"><div class="ol mine"><span>Community garden build</span><b>4</b></div><div class="bar"><i class="lead" style="width:40%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Trail cleanup day</span><b>4</b></div><div class="bar"><i class="lead" style="width:40%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Book swap fair</span><b>2</b></div><div class="bar"><i style="width:20%"></i></div></div>
+    <div class="foot"><span>10 votes</span><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>9</span><span class="btn-secondary">Close vote</span></div>
+    </div>
+
+    <div class="card">
+    <div class="meta"><span>Posted by Priya</span><span>Yesterday</span></div>
+    <div class="q">Which night for the end of term dinner?</div>
+    <div class="opt"><div class="ol mine"><span>Friday 14 June</span><b>5</b></div><div class="bar"><i class="lead" style="width:50%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Saturday 15 June</span><b>3</b></div><div class="bar"><i style="width:30%"></i></div></div>
+    <div class="opt"><div class="ol"><span>Sunday 16 June</span><b>2</b></div><div class="bar"><i style="width:20%"></i></div></div>
+    <div class="foot"><span>10 votes</span><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>5</span><span class="btn-secondary">Change vote</span></div>
+    </div>
+
+    <div class="section-label">Recently decided</div>
+    <div class="card">
+    <div class="meta"><span>Posted by Tom</span><span class="done">Decided</span></div>
+    <div class="q" style="font-size:16px;line-height:24px;margin-bottom:4px">New club T-shirt colour</div>
+    <div class="meta"><span>Winner: Forest green, 8 of 12 votes</span></div>
+    </div>
+
+    <div class="fab"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+  </div>
+  <!-- Screen 2 as the spec drew it: inert until moved where that view belongs. -->
+  <template data-spec-screen="2">
+    <div data-spec-screen="2">
+      <div class="app">
+      <div class="bk"><span class="icon"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>All decisions</span><span class="icon rep">Report</span></div>
+      <div class="meta">Posted by Maya, 3 days ago. Open until Maya closes it.</div>
+      <h1>Where should we meet on Thursdays?</h1>
+      <div class="list">
+      <div class="list-row sel"><span class="dot"></span><div class="grow"><div class="ol"><span>Library back room</span><b>6</b></div><div class="bar"><i class="lead" style="width:60%"></i></div></div></div>
+      <div class="list-row"><span class="dot"></span><div class="grow"><div class="ol"><span>Corner Cafe</span><b>3</b></div><div class="bar"><i style="width:30%"></i></div></div></div>
+      <div class="list-row"><span class="dot"></span><div class="grow"><div class="ol"><span>Dan's garage</span><b>1</b></div><div class="bar"><i style="width:10%"></i></div></div></div>
+      </div>
+      <div class="row"><span class="meta">10 votes so far</span><span class="btn-primary">Vote for Library back room</span></div>
+      <div class="section-label">Comments 14</div>
+      <div class="list">
+      <div class="c"><div class="ch"><b>Dan</b><span class="meta">2 days ago</span></div><p>The garage is free but has no heating, fair warning.</p><span class="rep">Report</span></div>
+      <div class="c"><div class="ch"><b>Priya</b><span class="meta">Yesterday</span></div><p>Library room fits all of us and has the big table.</p><span class="rep">Report</span></div>
+      <div class="c"><div class="ch"><b>You</b><span class="meta">3 hours ago</span></div><p>Cafe is nice but loud after 7.</p><span class="rep">Delete</span></div>
+      </div>
+      <div class="lbl">Add a comment</div>
+      <div class="field">e.g. I can bring the projector</div>
+      <span class="btn-secondary">Post comment</span>
+      </div>
+    </div>
+  </template>
+  <!-- /usernode-spec-screens@1 -->
 </body>
 </html>
